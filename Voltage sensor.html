@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Guide: Voltage Sensor</title>
+    <style>
+        :root {
+            --primary-color: #f59e0b; /* Amber/Voltage Yellow theme */
+            --text-dark: #0f172a;
+            --text-light: #475569;
+            --bg-gray: #f8fafc;
+            --border-color: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: white;
+            color: var(--text-dark);
+            line-height: 1.7;
+        }
+
+        .badge {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: var(--primary-color);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            z-index: 1000;
+        }
+
+        .main-wrapper {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 80px 40px;
+        }
+
+        .section {
+            display: flex;
+            gap: 50px;
+            margin-bottom: 120px;
+            align-items: flex-start;
+        }
+
+        .text-content {
+            flex: 1;
+        }
+
+        .visual-content {
+            flex: 1.2;
+            position: sticky;
+            top: 40px;
+        }
+
+        h1 { font-size: 3rem; border-bottom: 3px solid var(--primary-color); display: inline-block; margin-bottom: 30px; font-weight: bold; }
+        h2 { font-size: 2rem; margin-bottom: 20px; font-weight: bold; }
+
+        p { font-size: 1.1rem; color: var(--text-light); }
+
+        .image-box {
+            background: var(--bg-gray);
+            padding: 15px;
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .image-box img {
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+            display: block;
+        }
+
+        .caption {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        .pin-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .pin-list li {
+            margin-bottom: 12px;
+            padding: 12px;
+            background: var(--bg-gray);
+            border-radius: 8px;
+            font-size: 1rem;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .pin-label {
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-right: 10px;
+        }
+
+        @media (max-width: 1024px) {
+            .section { flex-direction: column; }
+            .visual-content { position: static; width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="badge">Get ready to learn</div>
+
+    <div class="main-wrapper">
+        
+        <h1>Voltage Sensor Module</h1>
+
+        <!-- Section 1: Intro and Component Photo -->
+        <div class="section">
+            <div class="visual-content">
+                <div class="image-box">
+                    <img src="Voltagesensor.jpg" alt="Voltage Sensor Module">
+                    <div class="caption">Voltage Sensor Module (0-25V) for Microcontrollers</div>
+                </div>
+            </div>
+            
+            <div class="text-content">
+                <h2>Introduction</h2>
+                <p>
+                    A **Voltage Sensor** is a simple but vital module used to measure the amount of electricity flowing through a circuit. Since microcontrollers like the ESP32 or Arduino cannot safely measure high voltages (anything above 3.3V or 5V) directly, this sensor acts as a "translator." It scales down a large voltage so your controller can read it safely without blowing up.
+                </p>
+
+                <h2>How it Works</h2>
+                <p>
+                    This module is based on a **Voltage Divider** principle. It uses two precisely chosen resistors to reduce the input voltage by a factor of 5. For example, if you connect a 25V battery to the input, the sensor "divides" it down to 5V at the output. Your code then multiplies that reading by 5 to tell you the true voltage of the battery.
+                </p>
+
+                <h2>How it is Used</h2>
+                <p>
+                    It is most commonly used for battery management and monitoring systems. Key uses include:
+                    <ul>
+                        <li>Monitoring the charge level of a Li-ion or Lead-Acid battery.</li>
+                        <li>Checking the output of a Solar Panel in real-time.</li>
+                        <li>Creating a digital DIY Multimeter using an OLED screen.</li>
+                        <li>Protecting circuits by triggering an alarm if the voltage gets too high or too low.</li>
+                    </ul>
+                </p>
+            </div>
+        </div>
+
+        <!-- Section 2: Pin Diagram and Guide -->
+        <div class="section">
+            <div class="visual-content">
+                <div class="image-box">
+                    <img src="Voltagesensor-Pinimage.jpg" alt="Voltage Sensor Connection Diagram">
+                    <div class="caption">Wiring: Note the distinction between Input (Screw Terminals) and Output (Pins)</div>
+                </div>
+            </div>
+
+            <div class="text-content">
+                <h2>Understanding the Pins</h2>
+                <p>The voltage sensor has two sides: a High Voltage input side and a Low Voltage output side.</p>
+                
+                <ul class="pin-list">
+                    <li><span class="pin-label">VCC (Input):</span> The positive terminal of the voltage you want to measure.</li>
+                    <li><span class="pin-label">GND (Input):</span> The negative terminal of the voltage source you are measuring.</li>
+                    <li><span class="pin-label">S (Signal):</span> The output pin that sends the scaled-down voltage to your microcontroller's Analog (ADC) pin.</li>
+                    <li><span class="pin-label">+ (Output):</span> This pin is usually not connected for basic use.</li>
+                    <li><span class="pin-label">- (Output):</span> Connect this to the Ground (GND) of your microcontroller.</li>
+                </ul>
+
+                <h2>Technical Summary</h2>
+                <p>
+                    This sensor is rated for a range of **0V to 25V DC**. It is important to remember that the maximum output depends on your microcontroller. If you are using an Arduino (5V), you can measure up to 25V. However, if you are using an **ESP32 (3.3V)**, you should only measure up to **16.5V** to ensure the "Signal" pin never exceeds the 3.3V limit of your board!
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
